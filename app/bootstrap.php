@@ -43,7 +43,7 @@ $app['fakepay.adapter_factory'] = $app->share(function() use ($app) {
     return new \FakePay\AdapterFactory($app);
 });
 
-$app['fakepay.adapter.beaver'] = function() use ($app) {
+$app['fakepay.adapter.realex'] = function() use ($app) {
     return new \FakePay\Adapter\RealexAdapter($app['form.factory']);
 };
 

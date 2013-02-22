@@ -32,7 +32,6 @@ class RealexAdapter implements AdapterInterface
 
         $required = [
             'MERCHANT_ID',
-            'ACCOUNT',
             'ORDER_ID',
             'AMOUNT',
             'CURRENCY',
@@ -41,15 +40,24 @@ class RealexAdapter implements AdapterInterface
         ];
 
         foreach ($required as $value) {
-            // TODO use $request->request when only accepting POST
             if (null === $request->get($value)) {
-                $request->getSession()->getFlashBag()->set('realex_error', sprintf('`%s` must be provided', $value));
+				$this->addFlashMessage($request, sprintf('`%s` must be provided', $value));
                 $out = false;
             }
         }
 
         return $out;
     }
+
+	/**
+	 * @param \Symfony\Component\HttpFoundation\Request $request
+	 * @param $message
+	 * @param string $key
+	 */
+	protected function addFlashMessage(Request $request, $message, $key = 'realex_error')
+	{
+		$request->getSession()->getFlashBag()->add($key, $message);
+	}
 
     /**
      * @return Form

@@ -30,7 +30,7 @@ class PaymentController extends BaseController
 
         $errors = [];
         if (!$adapter->validateRequest($this->request)) {
-            $errors = $this->request->getSession()->getFlashBag()->peek("{$name}_error");
+            $errors = $this->request->getSession()->getFlashBag()->get("{$name}_error");
         }
 
         return $this->templating->render('pay.html.twig', [
