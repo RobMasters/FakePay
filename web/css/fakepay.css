@@ -1,0 +1,7 @@
+#fakepay-container {
+    width: 300px;
+    min-height: 350px;
+    margin: 20px auto;
+    background: red;
+    padding: 20px;
+}
