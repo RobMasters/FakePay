@@ -1,6 +1,6 @@
 <?php
 
-namespace Fakepay\Controller;
+namespace FakePay\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 

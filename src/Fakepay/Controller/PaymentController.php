@@ -1,8 +1,8 @@
 <?php
 
-namespace Fakepay\Controller;
+namespace FakePay\Controller;
 
-use Fakepay\AdapterFactory;
+use FakePay\AdapterFactory;
 
 class PaymentController extends BaseController
 {
@@ -12,7 +12,7 @@ class PaymentController extends BaseController
     protected $adapterFactory;
 
     /**
-     * @param \Fakepay\AdapterFactory $adapterFactory
+     * @param \FakePay\AdapterFactory $adapterFactory
      */
     public function setAdapterFactory(AdapterFactory $adapterFactory)
     {
@@ -41,7 +41,7 @@ class PaymentController extends BaseController
 
     /**
      * @param $name
-     * @return \Fakepay\Adapter\AdapterInterface
+     * @return \FakePay\Adapter\AdapterInterface
      */
     protected function getAdapter($name)
     {

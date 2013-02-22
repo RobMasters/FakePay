@@ -1,8 +1,8 @@
 <?php
 
-namespace Fakepay;
+namespace FakePay;
 
-use Fakepay\Adapter\AdapterInterface;
+use FakePay\Adapter\AdapterInterface;
 
 class AdapterFactory
 {

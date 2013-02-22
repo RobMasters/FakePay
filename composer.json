@@ -9,6 +9,6 @@
         "twitter/bootstrap": "dev-master"
     },
     "autoload": {
-        "psr-0": {"Fakepay": "src/"}
+        "psr-0": {"FakePay": "src/"}
     }
 }

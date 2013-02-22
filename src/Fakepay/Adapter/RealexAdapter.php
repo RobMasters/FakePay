@@ -1,6 +1,6 @@
 <?php
 
-namespace Fakepay\Adapter;
+namespace FakePay\Adapter;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormFactory;

@@ -3,7 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Provider\FormServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
-use Fakepay\Controller\PaymentController;
+use FakePay\Controller\PaymentController;
 
 $app = new Silex\Application();
 $app['debug'] = true;
@@ -40,11 +40,11 @@ $app['payment.controller'] = $app->share(function() use ($app) {
 });
 
 $app['fakepay.adapter_factory'] = $app->share(function() use ($app) {
-    return new \Fakepay\AdapterFactory($app);
+    return new \FakePay\AdapterFactory($app);
 });
 
 $app['fakepay.adapter.beaver'] = function() use ($app) {
-    return new \Fakepay\Adapter\RealexAdapter($app['form.factory']);
+    return new \FakePay\Adapter\RealexAdapter($app['form.factory']);
 };
 
 return $app;
