@@ -1,0 +1,8 @@
+fakepay:
+
+  adapters:
+
+    realex:
+      merchant_id:  dotmobi
+      secret:       secret
+      response_url: http://admin.gomobi.local/realex.response.php

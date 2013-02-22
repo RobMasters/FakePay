@@ -1,6 +1,61 @@
 {
-    "hash": "90f731151ea4f0e1941c8513d18e1313",
+    "hash": "9673cc70834802f2fb843e38429b67a0",
     "packages": [
+        {
+            "name": "igorw/config-service-provider",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igorw/ConfigServiceProvider.git",
+                "reference": "v1.1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/igorw/ConfigServiceProvider/zipball/v1.1.3",
+                "reference": "v1.1.3",
+                "shasum": ""
+            },
+            "require": {
+                "silex/silex": "1.0.*@dev"
+            },
+            "require-dev": {
+                "symfony/yaml": ">=2.1,<3.0"
+            },
+            "suggest": {
+                "symfony/yaml": "~2.1"
+            },
+            "time": "2013-02-03 20:17:58",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Igorw\\Silex": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch",
+                    "homepage": "http://wiedler.ch/igor/"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/igorw/ConfigServiceProvider/contributors"
+                }
+            ],
+            "description": "A config ServiceProvider for Silex with support for php, json and yaml.",
+            "keywords": [
+                "silex"
+            ]
+        },
         {
             "name": "pimple/pimple",
             "version": "v1.0.1",
@@ -18,6 +73,7 @@
             "require": {
                 "php": ">=5.3.0"
             },
+            "time": "2012-11-11 08:32:34",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -44,8 +100,7 @@
             "keywords": [
                 "container",
                 "dependency injection"
-            ],
-            "time": "2012-11-11 08:32:34"
+            ]
         },
         {
             "name": "silex/silex",
@@ -94,6 +149,7 @@
                 "symfony/css-selector": ">=2.1,<2.3-dev",
                 "symfony/dom-crawler": ">=2.1,<2.3-dev"
             },
+            "time": "2013-02-19 08:41:40",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -124,8 +180,7 @@
             "homepage": "http://silex.sensiolabs.org",
             "keywords": [
                 "microframework"
-            ],
-            "time": "2013-02-19 08:41:40"
+            ]
         },
         {
             "name": "symfony/config",
@@ -145,6 +200,7 @@
             "require": {
                 "php": ">=5.3.3"
             },
+            "time": "2013-01-09 08:51:07",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -166,8 +222,7 @@
                 }
             ],
             "description": "Symfony Config Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-09 08:51:07"
+            "homepage": "http://symfony.com"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -194,6 +249,7 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/http-kernel": "2.1.*"
             },
+            "time": "2013-01-11 00:31:43",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -215,8 +271,7 @@
                 }
             ],
             "description": "Symfony EventDispatcher Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-11 00:31:43"
+            "homepage": "http://symfony.com"
         },
         {
             "name": "symfony/form",
@@ -247,6 +302,7 @@
                 "symfony/http-foundation": "2.1.*",
                 "symfony/validator": "2.1.*"
             },
+            "time": "2013-01-11 13:37:17",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -268,8 +324,7 @@
                 }
             ],
             "description": "Symfony Form Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-11 13:37:17"
+            "homepage": "http://symfony.com"
         },
         {
             "name": "symfony/http-foundation",
@@ -289,6 +344,7 @@
             "require": {
                 "php": ">=5.3.3"
             },
+            "time": "2013-01-11 00:31:43",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -311,8 +367,7 @@
                 }
             ],
             "description": "Symfony HttpFoundation Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-11 00:31:43"
+            "homepage": "http://symfony.com"
         },
         {
             "name": "symfony/http-kernel",
@@ -352,6 +407,7 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/finder": "2.1.*"
             },
+            "time": "2013-01-17 16:21:47",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -373,8 +429,7 @@
                 }
             ],
             "description": "Symfony HttpKernel Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-17 16:21:47"
+            "homepage": "http://symfony.com"
         },
         {
             "name": "symfony/locale",
@@ -397,6 +452,7 @@
             "suggest": {
                 "ext-intl": ">=5.3.3"
             },
+            "time": "2013-01-10 04:41:59",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -418,8 +474,7 @@
                 }
             ],
             "description": "Symfony Locale Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-10 04:41:59"
+            "homepage": "http://symfony.com"
         },
         {
             "name": "symfony/options-resolver",
@@ -439,6 +494,7 @@
             "require": {
                 "php": ">=5.3.3"
             },
+            "time": "2013-01-09 08:51:07",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -465,8 +521,7 @@
                 "config",
                 "configuration",
                 "options"
-            ],
-            "time": "2013-01-09 08:51:07"
+            ]
         },
         {
             "name": "symfony/routing",
@@ -497,6 +552,7 @@
                 "symfony/config": "2.1.*",
                 "symfony/yaml": "2.1.*"
             },
+            "time": "2013-01-09 08:51:07",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -518,8 +574,7 @@
                 }
             ],
             "description": "Symfony Routing Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-09 08:51:07"
+            "homepage": "http://symfony.com"
         },
         {
             "name": "symfony/translation",
@@ -547,6 +602,7 @@
                 "symfony/config": "2.1.*",
                 "symfony/yaml": "2.1.*"
             },
+            "time": "2013-01-09 08:51:07",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -568,8 +624,7 @@
                 }
             ],
             "description": "Symfony Translation Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-09 08:51:07"
+            "homepage": "http://symfony.com"
         },
         {
             "name": "symfony/twig-bridge",
@@ -606,6 +661,7 @@
                 "symfony/translation": "2.1.*",
                 "symfony/yaml": "2.1.*"
             },
+            "time": "2013-01-17 15:20:05",
             "type": "symfony-bridge",
             "autoload": {
                 "psr-0": {
@@ -627,8 +683,54 @@
                 }
             ],
             "description": "Symfony Twig Bridge",
-            "homepage": "http://symfony.com",
-            "time": "2013-01-17 15:20:05"
+            "homepage": "http://symfony.com"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Yaml",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Yaml.git",
+                "reference": "f198ac28048eeceae852419c076123aaee59cd1c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/f198ac28048eeceae852419c076123aaee59cd1c",
+                "reference": "f198ac28048eeceae852419c076123aaee59cd1c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "2013-01-31 21:39:01",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Yaml\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "http://symfony.com"
         },
         {
             "name": "twig/twig",
@@ -647,6 +749,7 @@
             "require": {
                 "php": ">=5.2.4"
             },
+            "time": "2013-02-09 18:21:53",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -676,8 +779,7 @@
             "homepage": "http://twig.sensiolabs.org",
             "keywords": [
                 "templating"
-            ],
-            "time": "2013-02-09 18:21:53"
+            ]
         },
         {
             "name": "twitter/bootstrap",
@@ -685,16 +787,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twitter/bootstrap.git",
-                "reference": "v2.3.0"
+                "reference": "16111a5e454a8af4407f4217b5defb6d7a9bdbd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twitter/bootstrap/zipball/v2.3.0",
-                "reference": "v2.3.0",
+                "url": "https://api.github.com/repos/twitter/bootstrap/zipball/16111a5e454a8af4407f4217b5defb6d7a9bdbd3",
+                "reference": "16111a5e454a8af4407f4217b5defb6d7a9bdbd3",
                 "shasum": ""
             },
+            "time": "2013-02-21 21:10:21",
             "type": "library",
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -703,8 +806,7 @@
             "keywords": [
                 "bootstrap",
                 "css"
-            ],
-            "time": "2013-02-08 06:13:13"
+            ]
         }
     ],
     "packages-dev": null,
@@ -714,6 +816,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "silex/silex": 20,
-        "twitter/bootstrap": 20
+        "twitter/bootstrap": 20,
+        "igorw/config-service-provider": 20,
+        "symfony/yaml": 20
     }
 }

@@ -3,30 +3,27 @@
 namespace FakePay\Adapter;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Form;
 
-class RealexAdapter implements AdapterInterface
+class RealexAdapter extends BaseAdapter
 {
-    /**
-     * @var \Symfony\Component\Form\FormFactory
-     */
-    protected $formFactory;
+	/**
+	 * @return mixed
+	 */
+	protected function configure()
+	{
+		$this
+			->setName('realex')
+		;
+	}
 
-    /**
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     */
-    function __construct(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
-
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return bool
-     */
-    public function validateRequest(Request $request)
+	/**
+	 * @param \Symfony\Component\HttpFoundation\Request $request
+	 * @return bool|mixed
+	 */
+	public function validateRequest()
     {
         $out = true;
 
@@ -39,25 +36,28 @@ class RealexAdapter implements AdapterInterface
             'AUTO_SETTLE_FLAG'
         ];
 
+		// Realvault
+		if ($this->request->request->has('OFFER_SAVE_CARD')) {
+			$required = array_merge($required, [
+				'PAYER_REF',
+				'PMT_REF',
+				'PAYER_EXIST'
+			]);
+		}
+
         foreach ($required as $value) {
-            if (null === $request->get($value)) {
-				$this->addFlashMessage($request, sprintf('`%s` must be provided', $value));
+            if (null === $this->request->request->get($value)) {
+				$this->addFlashMessage(sprintf('`%s` must be provided', $value));
                 $out = false;
             }
         }
 
+		if ($out) {
+			$this->savePersistentParams();
+		}
+
         return $out;
     }
-
-	/**
-	 * @param \Symfony\Component\HttpFoundation\Request $request
-	 * @param $message
-	 * @param string $key
-	 */
-	protected function addFlashMessage(Request $request, $message, $key = 'realex_error')
-	{
-		$request->getSession()->getFlashBag()->add($key, $message);
-	}
 
     /**
      * @return Form
@@ -75,4 +75,61 @@ class RealexAdapter implements AdapterInterface
             ->getForm()
         ;
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function process()
+	{
+		// Check data
+		// TODO
+
+		// Post response to client
+		$ch = curl_init($this->config['response_url']);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+			'ORDER_ID' => $this->getFlashBag()->get('ORDER_ID')[0],
+			'RESULT' => '00', // TODO other status codes...
+			'SAVED_PAYER_REF' => $this->getFlashBag()->get('PAYER_REF')[0],
+			'SAVED_PMT_REF' => $this->getFlashBag()->get('PMT_REF')[0],
+
+			// TODO - post back everything else in the spec...
+		));
+
+		$data = curl_exec($ch);
+
+		return new Response($data);
+	}
+
+	/**
+	 *
+	 */
+	private function savePersistentParams()
+	{
+		$params = [
+			'ORDER_ID'
+		];
+
+		// RealVault
+		if ($this->request->request->get('OFFER_SAVE_CARD')) {
+			$params = array_merge($params, [
+				'PAYER_REF',
+				'PMT_REF'
+			]);
+		}
+
+		$flashBag = $this->getFlashBag();;
+		foreach ($params as $param) {
+			$flashBag->set($param, $this->request->request->get($param));
+		}
+	}
+
+	/**
+	 * @return \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface
+	 */
+	private function getFlashBag()
+	{
+		return $this->request->getSession()->getFlashBag();
+	}
 }

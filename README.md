@@ -1,5 +1,7 @@
-FakePay - The simple way to fake your payment process in a test environment
-===========================================================================
+FakePay
+=======
+
+_The simple way to fake your payment process in a test environment._
 
 FakePay currently requires PHP >= 5.4
 
@@ -51,6 +53,9 @@ server {
                 fastcgi_pass   unix:/var/run/php5-fpm.sock;
                 include fastcgi_params;
                 fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+
+                # un-comment the following line to use the dev environment
+                # fastcgi_param APP_ENV dev
 
                 # un-comment the following line to use https
                 # fastcgi_param HTTPS on;

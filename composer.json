@@ -1,4 +1,14 @@
 {
+	"name": "fakepay/fakepay",
+	"description": "The simple way to fake your payment process in a test environment.",
+	"keywords": ["payment", "provider", "realex", "fake"],
+	"authors": [
+		{
+			"name": "Rob Masters",
+			"email": "robmasters87@gmail.com",
+			"role": "Developer"
+		}
+	],
     "require": {
         "silex/silex": "1.0.*@dev",
         "twig/twig": ">=1.8,<2.0-dev",
@@ -6,7 +16,9 @@
         "symfony/form": "~2.1",
         "symfony/config": "~2.1",
         "symfony/translation": "~2.1",
-        "twitter/bootstrap": "dev-master"
+        "twitter/bootstrap": "dev-master",
+		"igorw/config-service-provider": "dev-master",
+		"symfony/yaml": "dev-master"
     },
     "autoload": {
         "psr-0": {"FakePay": "src/"}

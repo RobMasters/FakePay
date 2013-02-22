@@ -8,13 +8,22 @@ use Symfony\Component\Form\Form;
 interface AdapterInterface
 {
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return mixed
+     * @return bool
      */
-    public function validateRequest(Request $request);
+    public function validateRequest();
 
     /**
      * @return Form
      */
     public function buildForm();
+
+	/**
+	 * @return string
+	 */
+	public function getName();
+
+	/**
+	 * @return mixed
+	 */
+	public function process();
 }

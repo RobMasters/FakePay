@@ -3,48 +3,41 @@
 namespace FakePay\Controller;
 
 use FakePay\AdapterFactory;
+use Symfony\Component\HttpFoundation\Response;
+use FakePay\Adapter\AdapterInterface;
 
 class PaymentController extends BaseController
 {
-    /**
-     * @var AdapterFactory
-     */
-    protected $adapterFactory;
-
-    /**
-     * @param \FakePay\AdapterFactory $adapterFactory
-     */
-    public function setAdapterFactory(AdapterFactory $adapterFactory)
+	/**
+	 * @param $adapter
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+    public function displayAction(AdapterInterface $adapter)
     {
-        $this->adapterFactory = $adapterFactory;
-    }
-
-    /**
-     * @param $adapter
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function displayAction($adapter = '')
-    {
-        $name = $adapter;
-        $adapter = $this->getAdapter($adapter);
-
         $errors = [];
         if (!$adapter->validateRequest($this->request)) {
-            $errors = $this->request->getSession()->getFlashBag()->get("{$name}_error");
+            $errors = $this->request->getSession()->getFlashBag()->get("{$adapter->getName()}_error");
         }
 
-        return $this->templating->render('pay.html.twig', [
+        return $this->templating->render("Adapter/{$adapter->getName()}.html.twig", [
+			'adapter' => $adapter,
             'form' => $adapter->buildForm()->createView(),
             'errors' => $errors
         ]);
     }
 
-    /**
-     * @param $name
-     * @return \FakePay\Adapter\AdapterInterface
-     */
-    protected function getAdapter($name)
-    {
-        return $this->adapterFactory->create($name);
-    }
+	/**
+	 * @param \FakePay\Adapter\AdapterInterface $adapter
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function processAction(AdapterInterface $adapter)
+	{
+		try {
+			$response = $adapter->process();
+		} catch (\Exception $e) {
+			return new Response($e->getMessage(), 400);
+		}
+
+		return $response ?: $this->templating->render("base_response.html.twig");
+	}
 }

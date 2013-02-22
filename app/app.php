@@ -6,8 +6,17 @@ $app->get('/info', function() {
 	return phpinfo();
 });
 
-$app->get('/{adapter}', "payment.controller:displayAction");
-$app->post('/{adapter}', "payment.controller:displayAction");
-//$app->post('/form/{handler}', "payment.controller:formAction");
+$adapterConverter = function($name) use ($app) {
+	return $app['fakepay.adapter_factory']->create($name);
+};
+
+$app->match('/{adapter}', "payment.controller:displayAction")
+	->method('GET|POST')
+	->convert('adapter', $adapterConverter)
+;
+
+$app->post('/process/{adapter}', "payment.controller:processAction")
+	->convert('adapter', $adapterConverter)
+;
 
 return $app;
