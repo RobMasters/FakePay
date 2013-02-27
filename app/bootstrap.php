@@ -50,6 +50,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
 	'monolog.logfile' => __DIR__.'/logs/development.log',
+	'monolog.name' => 'fakepay'
 ));
 
 /**
