@@ -1,17 +1,19 @@
-<script type="text/javascript">
-    $(function() {
-        console.log('moving remote content...');
-        $('#remote-content').detach().appendTo('#remote');
-    });
-</script>
 
 {% block local %}
-
+    <div class="alert alert-danger">
+        "local" block should be extended in `Sandbox/Adapter/{{ adapter.name }}.html.twig`
+    </div>
 {% endblock %}
 
 
 <div id="remote-content">
-    {% block remote %}
-            Test remote
-    {% endblock %}
+    {% block remote %}{% endblock %}
 </div>
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            $('#remote-content').detach().appendTo('#remote');
+        });
+    </script>
+{% endblock %}
