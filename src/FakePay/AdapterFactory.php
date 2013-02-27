@@ -3,6 +3,8 @@
 namespace FakePay;
 
 use FakePay\Adapter\AdapterInterface;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\Request;
 
 class AdapterFactory
 {
@@ -12,17 +14,22 @@ class AdapterFactory
     protected $container;
 
     /**
-     * @var array
+     * @var array|AdapterInterface[]
      */
     protected $adapters;
 
-    /**
-     * @param \Silex\Application $container
-     */
-    function __construct(\Silex\Application $container)
+	/**
+	 * @param Request $request
+	 * @param FormFactory $formFactory
+	 * @param array $config
+	 */
+    function __construct(Request $request, FormFactory $formFactory, array $config)
     {
-        $this->container = $container;
-        $this->loadAdapters();
+        $this->request = $request;
+		$this->formFactory = $formFactory;
+		$this->config = $config;
+
+		$this->adapters = array();
     }
 
     /**
@@ -34,19 +41,24 @@ class AdapterFactory
      */
     public function create($name)
     {
-        if (!array_key_exists($name, $this->adapters)) {
-            throw new \RuntimeException("Adapter `$name` does not exist.");
-        }
-
-        if ($this->adapters[$name] instanceof AdapterInterface) {
+        if (array_key_exists($name, $this->adapters) && $this->adapters[$name] instanceof AdapterInterface) {
             return $this->adapters[$name];
         }
 
-        return $this->adapters[$name] = new $this->container[$this->adapters[$name]](
-            $this->container['form.factory'],
-            $this->container['request'],
-            $this->container['fakepay']['adapter'][$name],
-            $this->container['sandbox']
+		if (!array_key_exists($name, $this->config)) {
+			throw new \RuntimeException("Adapter `$name` does not exist.");
+		}
+
+		if (!array_key_exists('class', $this->config[$name])) {
+			throw new \RuntimeException("Adapter `$name` has no class configured.");
+		}
+
+		$class = $this->config[$name]['class'];
+
+        return $this->adapters[$name] = new $class(
+            $this->formFactory,
+            $this->request,
+            $this->config[$name]
         );
     }
 
@@ -57,20 +69,6 @@ class AdapterFactory
      */
     public function getAllNames()
     {
-        return array_keys($this->adapters);
-    }
-
-    /**
-     * Ensure all adapters are (lazily) loaded. They will only be instantiated when asked for
-     */
-    private function loadAdapters()
-    {
-        $pattern = '/^fakepay\.adapter\.([a-z_-]+)\.class$/';
-        foreach ($this->container->keys() as $id) {
-            if (preg_match($pattern, $id, $matches)) {
-                list($classKey, $name) = $matches;
-                $this->adapters[$name] = $classKey;
-            }
-        }
+        return array_keys($this->config);
     }
 }

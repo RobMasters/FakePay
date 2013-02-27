@@ -62,25 +62,8 @@ $app['sandbox.controller'] = $app->share(function() use ($app) {
 });
 
 $app['fakepay.adapter_factory'] = $app->share(function() use ($app) {
-    return new \FakePay\AdapterFactory($app);
+    return new \FakePay\AdapterFactory($app['request'], $app['form.factory'], $app['fakepay']['adapter']);
 });
-
-
-/**
- * ADAPTERS
- * note: must match /^fakepay\.adapter\.[a-z_-]+$/
- */
-
-//$app['fakepay.adapter.realex'] = function() use ($app) {
-//    return new \FakePay\Adapter\RealexAdapter(
-//		$app['form.factory'],
-//		$app['request'],
-//		$app['fakepay']['adapter']['realex'],
-//        $app['sandbox']
-//	);
-//};
-$app['fakepay.adapter.realex.class'] = '\FakePay\Adapter\RealexAdapter';
-
 
 
 

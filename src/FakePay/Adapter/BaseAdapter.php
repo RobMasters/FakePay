@@ -28,23 +28,16 @@ abstract class BaseAdapter implements AdapterInterface
 	 */
 	protected $name;
 
-    /**
-     * @var bool
-     */
-    private $sandboxMode;
-
-    /**
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param array $config
-     * @param $sandboxMode
-     */
-    function __construct(FormFactory $formFactory, Request $request, $config, $sandboxMode)
+	/**
+	 * @param \Symfony\Component\Form\FormFactory $formFactory
+	 * @param \Symfony\Component\HttpFoundation\Request $request
+	 * @param $config
+	 */
+    function __construct(FormFactory $formFactory, Request $request, $config)
     {
         $this->formFactory = $formFactory;
 		$this->request = $request;
 		$this->config = $config;
-        $this->sandboxMode = $sandboxMode;
 
 		$this->configure();
     }
@@ -53,14 +46,6 @@ abstract class BaseAdapter implements AdapterInterface
 	 * @return mixed
 	 */
 	abstract protected function configure();
-
-    /**
-     * @return bool
-     */
-    protected function inSandboxMode()
-    {
-        return $this->sandboxMode;
-    }
 
 	/**
 	 * @param $name
