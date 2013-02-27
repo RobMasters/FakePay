@@ -1,0 +1,42 @@
+{% extends 'Sandbox/Adapter/base_adapter.html.twig' %}
+
+{% block local %}
+    <form target="realex-iframe" method="post" action="{{ path('sandbox_request', {adapter: adapter.name}) }}" class="well">
+        <fieldset>
+            <legend>required fields</legend>
+
+            <label>MERCHANT_ID</label>
+            <input type="text" name="MERCHANT_ID" value="mechant-id" />
+
+            <label>ORDER_ID</label>
+            <input type="text" name="ORDER_ID" value="xyz" />
+
+            <label>AMOUNT</label>
+            <input type="text" name="AMOUNT" value="1000" />
+
+            <label>CURRENCY</label>
+            <input type="text" name="CURRENCY" value="USD" />
+
+            <label>TIMESTAMP</label>
+            <input type="text" name="TIMESTAMP" value="{{ 'now'|date('Ymdhis') }}" />
+
+            <label>AUTO_SETTLE_FLAG</label>
+            <input type="text" name="AUTO_SETTLE_FLAG" value="1" />
+
+        </fieldset>
+
+        <fieldset>
+            <legend>optional fields</legend>
+
+
+
+        </fieldset>
+
+
+        <input type="submit" value="submit" class="btn btn-primary" />
+    </form>
+{% endblock %}
+
+{% block remote %}
+    <iframe name="realex-iframe" id="remote-frame"></iframe>
+{% endblock %}

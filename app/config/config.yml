@@ -7,3 +7,7 @@ fakepay:
       merchant_id:  %realex.merchant_id%
       secret:       %realex.secret%
       response_url: %realex.response_url%
+
+
+    sagepay:
+      class: \FakePay\Adapter\RealexAdapter

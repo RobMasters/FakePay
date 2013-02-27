@@ -1,0 +1,17 @@
+<script type="text/javascript">
+    $(function() {
+        console.log('moving remote content...');
+        $('#remote-content').detach().appendTo('#remote');
+    });
+</script>
+
+{% block local %}
+
+{% endblock %}
+
+
+<div id="remote-content">
+    {% block remote %}
+            Test remote
+    {% endblock %}
+</div>

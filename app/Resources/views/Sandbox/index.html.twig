@@ -1,5 +1,24 @@
 {% extends 'base_form.html.twig' %}
 
+{% block title %}FakePay Sandbox{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            $('#adapter-list li').click(function(e) {
+                e.preventDefault();
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+
+                $('#local, #remote').html('');
+
+                $('#local').load('/sandbox/' + $(this).data('name') + '/form');
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
@@ -17,9 +36,26 @@
             </p>
         </header>
 
-        Adapters:<br />
-        {% for id in ids %}
-            {{ id }}<br />
-        {% endfor %}
+        <ul class="nav nav-pills" id="adapter-list">
+            {% for id in ids %}
+                <li id="adapter-pill-{{ id }}" {{ loop.first ? 'class="active"' : '' }} data-name="{{ id }}">
+                    <a href="#">{{ id }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div id="where-the-magic-happens" class="row">
+            <section class="span6 sandbox-zone">
+                <header>local</header>
+                <div class="zone-border"></div>
+                <div class="zone-content" id="local"></div>
+            </section>
+
+            <section class="span6 sandbox-zone">
+                <header>remote</header>
+                <div class="zone-border"></div>
+                <div class="zone-content" id="remote"></div>
+            </section>
+        </div>
     </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     {% block metadata %}{% endblock %}
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}FakePay{% endblock %}</title>
     {% block stylesheets %}
         <link rel="stylesheet" href="/css/fakepay.css" />
         <link rel="stylesheet" href="/css/bootstrap.min.css" />
@@ -17,6 +17,10 @@
         {% block content %}{% endblock %}
     </div>
 {% endblock %}
-{% block javascripts %}{% endblock %}
+
+{% block javascripts %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+{% endblock %}
+
 </body>
 </html>

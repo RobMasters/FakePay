@@ -14,6 +14,11 @@ $app->get('/info', function() {
 
 $app->get('/sandbox', 'sandbox.controller:indexAction')->bind('sandbox');
 
+$app->get('/sandbox/{adapter}/form', 'sandbox.controller:formAction')
+    ->convert('adapter', $adapterConverter)
+    ->bind('sandbox_form')
+;
+
 $app->match('/sandbox/{adapter}/request', 'payment.controller:displayAction')
     ->method('GET|POST')
     ->convert('adapter', $adapterConverter)

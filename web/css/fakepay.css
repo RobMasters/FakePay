@@ -8,3 +8,43 @@ body {
     margin: 20px auto;
     /*padding: 20px;*/
 }
+
+#where-the-magic-happens.row {
+    /*margin: 20px -10px;*/
+}
+
+.sandbox-zone {
+    min-height: 400px !important;
+    border-radius: 10px;
+    position: relative;
+    margin-top: 40px;
+}
+
+.sandbox-zone header {
+    position: absolute;
+    top: -25px;
+    left: 5px;
+}
+
+.sandbox-zone .zone-border {
+    border: 3px dashed #CCCCCC;
+    border-radius: 8px;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 20px;
+    z-index: -1;
+}
+
+.sandbox-zone .zone-content {
+    min-height: 100px;
+    padding: 20px;
+}
+
+#remote-frame {
+    min-height: 350px;
+    width: 100%;
+}
