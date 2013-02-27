@@ -28,16 +28,23 @@ abstract class BaseAdapter implements AdapterInterface
 	 */
 	protected $name;
 
-	/**
-	 * @param \Symfony\Component\Form\FormFactory $formFactory
-	 * @param \Symfony\Component\HttpFoundation\Request $request
-	 * @param array $config
-	 */
-    function __construct(FormFactory $formFactory, Request $request, $config = array())
+    /**
+     * @var bool
+     */
+    private $sandboxMode;
+
+    /**
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param array $config
+     * @param $sandboxMode
+     */
+    function __construct(FormFactory $formFactory, Request $request, $config, $sandboxMode)
     {
         $this->formFactory = $formFactory;
 		$this->request = $request;
 		$this->config = $config;
+        $this->sandboxMode = $sandboxMode;
 
 		$this->configure();
     }
@@ -46,6 +53,14 @@ abstract class BaseAdapter implements AdapterInterface
 	 * @return mixed
 	 */
 	abstract protected function configure();
+
+    /**
+     * @return bool
+     */
+    protected function inSandboxMode()
+    {
+        return $this->sandboxMode;
+    }
 
 	/**
 	 * @param $name
@@ -80,6 +95,28 @@ abstract class BaseAdapter implements AdapterInterface
 		$key = (!empty($key)) ? $key : sprintf('%s_error', $this->getName());
 		$this->request->getSession()->getFlashBag()->add($key, $message);
 	}
+
+    /**
+     * @return string
+     */
+    protected function getResponseUrl()
+    {
+        // Slightly hacky, but not to worry. Requests should always come from a different host,
+        // so if it doesn't then we know it's via the sandbox.
+        if (strpos($this->request->server->get('HTTP_REFERER'), $this->request->server->get('HTTP_HOST')) !== false) {
+            return $this->getSandboxResponseUrl();
+        }
+
+        return $this->config['response_url'];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSandboxResponseUrl()
+    {
+        return sprintf('http://%s/sandbox/%s/response', trim($this->request->server->get('HTTP_HOST'), '/'), $this->getName());
+    }
 
     /**
      * @return Form

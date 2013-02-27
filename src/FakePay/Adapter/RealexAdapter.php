@@ -85,7 +85,7 @@ class RealexAdapter extends BaseAdapter
 		// TODO
 
 		// Post response to client
-		$ch = curl_init($this->config['response_url']);
+		$ch = curl_init($this->getResponseUrl());
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, array(

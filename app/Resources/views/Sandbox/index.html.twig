@@ -1,0 +1,25 @@
+{% extends 'base_form.html.twig' %}
+
+{% block body %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="/">FakePay</a>
+            </div>
+        </div>
+    </div>
+    <div id="container" class="container">
+        <header class="hero-unit">
+            <h1>FakePay Sandbox</h1>
+            <p>
+                See just how easy it is to integrate popular payment provider/s into your application. Well, fake
+                versions of them anyway...but your application won't know any different.
+            </p>
+        </header>
+
+        Adapters:<br />
+        {% for id in ids %}
+            {{ id }}<br />
+        {% endfor %}
+    </div>
+{% endblock %}

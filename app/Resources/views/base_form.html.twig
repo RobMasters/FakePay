@@ -12,7 +12,8 @@
 		{% endblock %}
     {% else %}
 		{% block form %}
-			<form action="process/{{ adapter.name }}" method="post" class="well">
+            {% set route = app.sandbox ? 'sandbox_response' : 'response' %}
+			<form action="{{ path(route, {adapter: adapter.name}) }}" method="post" class="well">
 				{{ form_widget(form) }}
 
 				<input type="submit" name="submit" />

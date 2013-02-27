@@ -7,21 +7,31 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class BaseController
 {
     /**
-     * @var \Symfony\Component\HttpFoundation\Request
+     * @var \Silex\Application
      */
-    protected $request;
+    protected $app;
 
     /**
-     * @var \Twig_Environment
+     * @param \Silex\Application $app
      */
-    protected $templating;
-
-    /**
-     * @param \Twig_Environment $templating
-     */
-    function __construct(Request $request, \Twig_Environment $templating)
+    function __construct(\Silex\Application $app)
     {
-        $this->request = $request;
-        $this->templating = $templating;
+        $this->app = $app;
+    }
+
+    /**
+     * @return \Twig_Environment
+     */
+    public function getTemplating()
+    {
+        return $this->app['twig'];
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Request
+     */
+    public function getRequest()
+    {
+        return $this->app['request'];
     }
 }

@@ -1,0 +1,5 @@
+; FakePay parameters
+
+realex.merchant_id          = fakepay
+realex.secret               = mindyourbusiness
+realex.response_url         = http://
