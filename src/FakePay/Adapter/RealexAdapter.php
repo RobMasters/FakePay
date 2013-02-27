@@ -82,15 +82,19 @@ class RealexAdapter extends BaseAdapter
 	public function process()
 	{
 		// Check data
-		// TODO
+
+		$responseUrl = $this->getResponseUrl();
+		$responseCode = '00';
+
+		$this->logger->debug("Posting response code `$responseCode` to: $responseUrl");
 
 		// Post response to client
-		$ch = curl_init($this->getResponseUrl());
+		$ch = curl_init($responseUrl);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, array(
 			'ORDER_ID' => $this->getFlashBag()->get('ORDER_ID')[0],
-			'RESULT' => '00', // TODO other status codes...
+			'RESULT' => $responseCode, // TODO other status codes...
 			'SAVED_PAYER_REF' => $this->getFlashBag()->get('PAYER_REF')[0],
 			'SAVED_PMT_REF' => $this->getFlashBag()->get('PMT_REF')[0],
 

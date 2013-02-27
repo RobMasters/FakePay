@@ -33,6 +33,7 @@ class PaymentController extends BaseController
 	public function processAction(AdapterInterface $adapter)
 	{
 		try {
+			$this->getLogger()->addDebug("Processing payment using adapter: " . $adapter->getName());
 			$response = $adapter->process();
 		} catch (\Exception $e) {
 			return new Response($e->getMessage(), 400);

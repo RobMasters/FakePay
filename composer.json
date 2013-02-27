@@ -18,7 +18,8 @@
         "symfony/translation": "~2.1",
         "twitter/bootstrap": "dev-master",
 		"igorw/config-service-provider": "dev-master",
-		"symfony/yaml": "dev-master"
+		"symfony/yaml": "dev-master",
+		"monolog/monolog": ">=1.0.0"
     },
     "autoload": {
         "psr-0": {"FakePay": "src/"}

@@ -40,4 +40,8 @@ $app->post('/{adapter}/response', 'payment.controller:processAction')
     ->bind('response')
 ;
 
+$app->error(function(\Exception $e) use ($app) {
+	$app['monolog']->addError($e->getMessage());
+}, \Silex\Application::EARLY_EVENT);
+
 return $app;

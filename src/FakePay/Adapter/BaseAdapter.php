@@ -3,6 +3,7 @@
 namespace FakePay\Adapter;
 
 use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Form;
 
@@ -19,9 +20,19 @@ abstract class BaseAdapter implements AdapterInterface
 	protected $request;
 
 	/**
+	 * @var bool
+	 */
+	protected $sandbox;
+
+	/**
 	 * @var array
 	 */
 	protected $config;
+
+	/**
+	 * @var \Psr\Log\LoggerInterface
+	 */
+	protected $logger;
 
 	/**
 	 * @var string
@@ -31,13 +42,17 @@ abstract class BaseAdapter implements AdapterInterface
 	/**
 	 * @param \Symfony\Component\Form\FormFactory $formFactory
 	 * @param \Symfony\Component\HttpFoundation\Request $request
+	 * @param $sandbox
 	 * @param $config
+	 * @param \Psr\Log\LoggerInterface $logger
 	 */
-    function __construct(FormFactory $formFactory, Request $request, $config)
+    function __construct(FormFactory $formFactory, Request $request, $sandbox, $config, LoggerInterface $logger)
     {
         $this->formFactory = $formFactory;
 		$this->request = $request;
+		$this->sandbox = $sandbox;
 		$this->config = $config;
+		$this->logger = $logger;
 
 		$this->configure();
     }
@@ -86,9 +101,7 @@ abstract class BaseAdapter implements AdapterInterface
      */
     protected function getResponseUrl()
     {
-        // Slightly hacky, but not to worry. Requests should always come from a different host,
-        // so if it doesn't then we know it's via the sandbox.
-        if (strpos($this->request->server->get('HTTP_REFERER'), $this->request->server->get('HTTP_HOST')) !== false) {
+        if ($this->sandbox) {
             return $this->getSandboxResponseUrl();
         }
 

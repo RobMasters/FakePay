@@ -3,6 +3,7 @@
 namespace FakePay;
 
 use FakePay\Adapter\AdapterInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,15 +20,29 @@ class AdapterFactory
     protected $adapters;
 
 	/**
+	 * @var bool
+	 */
+	protected $sandbox;
+
+	/**
+	 * @var \Psr\Log\LoggerInterface
+	 */
+	protected $logger;
+
+	/**
 	 * @param Request $request
 	 * @param FormFactory $formFactory
 	 * @param array $config
+	 * @param bool $sandbox
+	 * @param \Psr\Log\LoggerInterface $logger
 	 */
-    function __construct(Request $request, FormFactory $formFactory, array $config)
+    function __construct(Request $request, FormFactory $formFactory, array $config, $sandbox, LoggerInterface $logger)
     {
         $this->request = $request;
 		$this->formFactory = $formFactory;
 		$this->config = $config;
+		$this->sandbox = $sandbox;
+		$this->logger = $logger;
 
 		$this->adapters = array();
     }
@@ -58,7 +73,9 @@ class AdapterFactory
         return $this->adapters[$name] = new $class(
             $this->formFactory,
             $this->request,
-            $this->config[$name]
+			$this->sandbox,
+            $this->config[$name],
+			$this->logger
         );
     }
 

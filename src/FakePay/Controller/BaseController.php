@@ -34,4 +34,12 @@ abstract class BaseController
     {
         return $this->app['request'];
     }
+
+	/**
+	 * @return \Monolog\Logger
+	 */
+	public function getLogger()
+	{
+		return $this->app['monolog'];
+	}
 }

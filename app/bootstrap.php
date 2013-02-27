@@ -21,7 +21,7 @@ $app['sandbox'] = false; // Leave this alone - it will be set as true automatica
 $replacements = parse_ini_file(__DIR__.'/config/parameters.ini');
 
 $env = getenv('APP_ENV') ?: 'prod';
-$app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/config/config.yml"));
+$app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/config/config.yml", $replacements));
 $envConfig = __DIR__."/config/config_$env.yml";
 if (file_exists($envConfig)) {
 	$app->register(new Igorw\Silex\ConfigServiceProvider($envConfig));
@@ -48,6 +48,9 @@ $app->register(new FormServiceProvider());
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+	'monolog.logfile' => __DIR__.'/logs/development.log',
+));
 
 /**
  * APPLICATION SERVICES
@@ -62,7 +65,13 @@ $app['sandbox.controller'] = $app->share(function() use ($app) {
 });
 
 $app['fakepay.adapter_factory'] = $app->share(function() use ($app) {
-    return new \FakePay\AdapterFactory($app['request'], $app['form.factory'], $app['fakepay']['adapter']);
+    return new \FakePay\AdapterFactory(
+		$app['request'],
+		$app['form.factory'],
+		$app['fakepay']['adapter'],
+		$app['sandbox'],
+		$app['monolog']
+	);
 });
 
 
