@@ -84,7 +84,7 @@ class RealexAdapter extends BaseAdapter
 		// Check data
 
 		$responseUrl = $this->getResponseUrl();
-		$responseCode = '00';
+		$responseCode = $this->request->request->get('custom_status', '00');
 
 		$this->logger->debug("Posting response code `$responseCode` to: $responseUrl");
 

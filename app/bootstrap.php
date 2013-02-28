@@ -57,6 +57,10 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
  * APPLICATION SERVICES
  */
 
+$app->before(function() use ($app) {
+	$app['twig']->addExtension(new FakePay\Twig\FakePayExtension($app));
+});
+
 $app['payment.controller'] = $app->share(function() use ($app) {
     return new PaymentController($app);
 });

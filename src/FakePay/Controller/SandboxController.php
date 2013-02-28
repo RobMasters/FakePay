@@ -27,4 +27,11 @@ class SandboxController extends BaseController
             'adapter' => $adapter
         ]);
     }
+
+	public function responseAction(AdapterInterface $adapter)
+	{
+		return $this->getTemplating()->render("Sandbox/response.html.twig", [
+			'adapter' => $adapter
+		]);
+	}
 }

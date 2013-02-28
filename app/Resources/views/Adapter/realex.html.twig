@@ -1,1 +1,46 @@
 {% extends 'base_form.html.twig' %}
+
+{% block javascripts %}
+	{{ parent() }}
+
+	<script type="text/javascript">
+		$(function() {
+			$('#myTab').tab();
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+
+	<ul class="nav nav-tabs" id="myTab">
+		<li class="active"><a data-toggle="tab" href="#realex-simple">Simple</a></li>
+		<li><a data-toggle="tab" href="#realex-traditional">Traditional</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="realex-simple">
+
+			{% set route = app.sandbox ? 'sandbox_process' : 'process' %}
+			<form action="{{ path(route, {adapter: adapter.name}) }}" method="post">
+				<label>Desired result</label>
+				<select name="custom_status">
+					<option value="00">00 - Success</option>
+					<option value="101">101 - Declined</option>
+					<option value="103">103 - Lost/Stolen</option>
+					<option value="200">200 - Bank error</option>
+					<option value="300">300 - Realex error</option>
+					<option value="300">300 - Realex error</option>
+					<option value="500">500 - XML error</option>
+					<option value="600">600 - Connection error</option>
+					<option value="666">666 - Client deactivated</option>
+				</select>
+				<div class="form-actions">
+					<input type="submit" class="btn btn-primary" value="Proceed">
+				</div>
+			</form>
+
+		</div>
+		<div class="tab-pane" id="realex-traditional">{{ parent() }}</div>
+	</div>
+
+{% endblock %}

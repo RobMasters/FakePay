@@ -22,15 +22,27 @@ $app->get('/sandbox/{adapter}/form', 'sandbox.controller:formAction')
 $app->match('/sandbox/{adapter}/request', 'payment.controller:displayAction')
     ->method('GET|POST')
     ->convert('adapter', $adapterConverter)
+	->before(function() use ($app) {
+		$app['sandbox'] = true;
+	})
     ->bind('sandbox_request')
-    ->before(function() use ($app) {
-        $app['sandbox'] = true;
-    })
+;
+
+$app->match('/sandbox/{adapter}/process', 'payment.controller:processAction')
+    ->method('GET|POST')
+    ->convert('adapter', $adapterConverter)
+	->before(function() use ($app) {
+		$app['sandbox'] = true;
+	})
+    ->bind('sandbox_process')
 ;
 
 $app->match('/sandbox/{adapter}/response', 'sandbox.controller:responseAction')
     ->method('GET|POST')
     ->convert('adapter', $adapterConverter)
+	->before(function() use ($app) {
+		$app['sandbox'] = true;
+	})
     ->bind('sandbox_response')
 ;
 
@@ -42,7 +54,7 @@ $app->match('/{adapter}', 'payment.controller:displayAction')
 
 $app->post('/{adapter}/response', 'payment.controller:processAction')
 	->convert('adapter', $adapterConverter)
-    ->bind('response')
+    ->bind('process')
 ;
 
 $app->error(function(\Exception $e) use ($app) {

@@ -12,7 +12,7 @@
 		{% endblock %}
     {% else %}
 		{% block form %}
-            {% set route = app.sandbox ? 'sandbox_response' : 'response' %}
+			{% set route = app.sandbox ? 'sandbox_process' : 'process' %}
 			<form action="{{ path(route, {adapter: adapter.name}) }}" method="post" class="well">
 				{{ form_widget(form) }}
 

@@ -39,6 +39,10 @@ body {
     z-index: -1;
 }
 
+.sandbox-zone.active .zone-border {
+	border-color: #62C462;
+}
+
 .sandbox-zone .zone-content {
     min-height: 100px;
     padding: 20px;
@@ -47,4 +51,5 @@ body {
 #remote-frame {
     min-height: 350px;
     width: 100%;
+	border: 0;
 }

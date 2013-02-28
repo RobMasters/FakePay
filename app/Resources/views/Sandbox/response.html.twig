@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+	<div class="alert alert-success">Complete</div>
+
+	<p>
+		At this point, following data will be posted back to your configured response URL:
+	</p>
+
+	<ul>
+		{% for key, value in app.request.request.all %}
+			<li>{{ key }}: {{ value }}</li>
+		{% endfor %}
+	</ul>
+
+	<p>
+		The response is then displayed via the remote server.
+	</p>
+
+	<p>
+		If you're using an embedded iframe for the Realex system, unfortunately this will mean that you're unable to listen
+		to events in the iframe, or call methods such as 'parent.function()' from your response due to cross-domain restrictions.
+		The best thing to do in such a case is to listen for the load event of the iframe or regularly poll to check on the status
+		of the transaction.
+	</p>
+{% endblock %}

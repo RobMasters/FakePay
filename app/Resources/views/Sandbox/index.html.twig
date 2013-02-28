@@ -14,8 +14,22 @@
                 $('#local, #remote').html('');
 
                 $('#local').load('/sandbox/' + $(this).data('name') + '/form');
+
+				$('#where-the-magic-happens').on('setHost', function(e, type) {
+					var el = $('#' + type);
+					$(this).find('.sandbox-zone').removeClass('active');
+					el.parent().addClass('active');
+
+					$('html, body').animate({
+						scrollTop: $('#adapter-list').offset().top - 60
+					}, 500);
+				});
             });
         });
+
+		var set_active_host = function(host) {
+			$('#where-the-magic-happens').trigger('setHost', host);
+		}
     </script>
 {% endblock %}
 
