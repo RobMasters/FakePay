@@ -3,14 +3,43 @@ FakePay
 
 _The simple way to fake your payment process in a test environment._
 
-FakePay currently requires PHP >= 5.4
+FakePay currently requires PHP >= 5.3
 
-## Installing
+## Installation
 
-Clone this application and set up your local webserver so that ``http://fakepay.local`` (or whatever you'd like to use)
+### Application
+
+Clone the application and install dependencies:
+
+```
+$ git clone https://github.com/RobMasters/FakePay.git
+$ cd FakePay
+
+$ curl -s https://getcomposer.org/installer | php
+$ php composer.phar install
+
+```
+
+Create a log directory and ensure it is writable by the web-server user:
+
+```
+$ mkdir app/logs
+$ chown 0777 app/logs
+```
+
+Create and edit your parameters.ini file from the distributed version:
+
+```
+$ cp app/config/parameters.ini.dist app/config/parameters.ini
+$ vim app/config/parameters.ini
+```
+
+### Server
+
+Set up your local webserver so that ``http://fakepay.local`` (or whatever you'd like to use)
 points to the ``web/index.php`` file. Also make sure to add the address to ``/etc/hosts``!
 
-### Apache
+#### Apache
 
 Simply set your document root to the web directory, and the ``.htaccess`` will handle rewriting URLs to the ``index.php``
 front controller.
@@ -25,7 +54,7 @@ e.g.
 </VirtualHost>
 ```
 
-### Nginx
+#### Nginx
 
 The following basic configuration should do the trick:
 
