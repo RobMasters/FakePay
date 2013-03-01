@@ -19,11 +19,11 @@ class PaymentController extends BaseController
             $errors = $this->getRequest()->getSession()->getFlashBag()->get("{$adapter->getName()}_error");
         }
 
-        return new Response($this->getTemplating()->render("Adapter/{$adapter->getName()}.html.twig", [
+        return new Response($this->getTemplating()->render("Adapter/{$adapter->getName()}.html.twig", array(
 			'adapter' => $adapter,
             'form' => $adapter->buildForm()->createView(),
             'errors' => $errors
-        ]));
+        )));
     }
 
 	/**

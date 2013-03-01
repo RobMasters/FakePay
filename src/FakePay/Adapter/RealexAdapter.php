@@ -59,23 +59,6 @@ class RealexAdapter extends BaseAdapter
         return $out;
     }
 
-    /**
-     * @return Form
-     */
-    public function buildForm()
-    {
-        return $this->formFactory->createBuilder()
-            ->add('name')
-            ->add('card_type', 'choice', [
-                'choices' => ['visa' => 'Visa', 'mastercard' => 'Mastercard']
-            ])
-            ->add('card_number')
-            ->add('security_code')
-            ->add('expiry_date', 'date')
-            ->getForm()
-        ;
-    }
-
 	/**
 	 * @return mixed
 	 */
@@ -117,10 +100,10 @@ class RealexAdapter extends BaseAdapter
 
 		// RealVault
 		if ($this->request->request->get('OFFER_SAVE_CARD')) {
-			$params = array_merge($params, [
+			$params = array_merge($params, array(
 				'PAYER_REF',
 				'PMT_REF'
-			]);
+			));
 		}
 
 		$flashBag = $this->getFlashBag();;

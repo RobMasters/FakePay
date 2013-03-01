@@ -36,13 +36,13 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
-$app->register(new Silex\Provider\TranslationServiceProvider(), [
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'locale_fallback' => 'en',
-]);
+));
 
-$app->register(new Silex\Provider\TwigServiceProvider(), [
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/Resources/views',
-]);
+));
 
 $app->register(new FormServiceProvider());
 

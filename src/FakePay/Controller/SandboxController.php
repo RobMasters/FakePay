@@ -14,24 +14,24 @@ class SandboxController extends BaseController
     {
         $ids = $this->app['fakepay.adapter_factory']->getAllNames();
 
-        return $this->getTemplating()->render("Sandbox/index.html.twig", [
+        return $this->getTemplating()->render("Sandbox/index.html.twig", array(
             'ids' => $ids
-        ]);
+        ));
     }
 
     public function formAction(AdapterInterface $adapter)
     {
         $name = $adapter->getName();
 
-        return $this->getTemplating()->render("Sandbox/Adapter/{$name}.html.twig", [
+        return $this->getTemplating()->render("Sandbox/Adapter/{$name}.html.twig", array(
             'adapter' => $adapter
-        ]);
+        ));
     }
 
 	public function responseAction(AdapterInterface $adapter)
 	{
-		return $this->getTemplating()->render("Sandbox/response.html.twig", [
+		return $this->getTemplating()->render("Sandbox/response.html.twig", array(
 			'adapter' => $adapter
-		]);
+		));
 	}
 }

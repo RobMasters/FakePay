@@ -123,9 +123,9 @@ abstract class BaseAdapter implements AdapterInterface
     {
         return $this->formFactory->createBuilder()
             ->add('name')
-            ->add('card_type', 'choice', [
-                'choices' => ['visa' => 'Visa', 'mastercard' => 'Mastercard']
-            ])
+            ->add('card_type', 'choice', array(
+                'choices' => array('visa' => 'Visa', 'mastercard' => 'Mastercard')
+            ))
             ->add('card_number')
             ->add('security_code')
             ->add('expiry_date', 'date')
