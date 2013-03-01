@@ -14,7 +14,7 @@ class PaymentController extends BaseController
      */
     public function displayAction(AdapterInterface $adapter)
     {
-        $errors = [];
+        $errors = array();
         if (!$adapter->validateRequest($this->getRequest())) {
             $errors = $this->getRequest()->getSession()->getFlashBag()->get("{$adapter->getName()}_error");
         }
