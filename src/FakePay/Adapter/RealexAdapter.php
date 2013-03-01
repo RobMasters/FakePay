@@ -76,10 +76,10 @@ class RealexAdapter extends BaseAdapter
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-			'ORDER_ID' => $this->getFlashBag()->get('ORDER_ID')[0],
+			'ORDER_ID' => array_shift($this->getFlashBag()->get('ORDER_ID')),
 			'RESULT' => $responseCode, // TODO other status codes...
-			'SAVED_PAYER_REF' => $this->getFlashBag()->get('PAYER_REF')[0],
-			'SAVED_PMT_REF' => $this->getFlashBag()->get('PMT_REF')[0],
+			'SAVED_PAYER_REF' => array_shift($this->getFlashBag()->get('PAYER_REF')),
+			'SAVED_PMT_REF' => array_shift($this->getFlashBag()->get('PMT_REF')),
 
 			// TODO - post back everything else in the spec...
 		));
