@@ -27,14 +27,14 @@ class RealexAdapter extends BaseAdapter
     {
         $out = true;
 
-        $required = [
+        $required = array(
             'MERCHANT_ID',
             'ORDER_ID',
             'AMOUNT',
             'CURRENCY',
             'TIMESTAMP',
             'AUTO_SETTLE_FLAG'
-        ];
+        );
 
 		// Realvault
 		if ($this->request->request->has('OFFER_SAVE_CARD')) {
