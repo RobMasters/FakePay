@@ -94,9 +94,9 @@ class RealexAdapter extends BaseAdapter
 	 */
 	private function savePersistentParams()
 	{
-		$params = [
+		$params = array(
 			'ORDER_ID'
-		];
+		);
 
 		// RealVault
 		if ($this->request->request->get('OFFER_SAVE_CARD')) {
