@@ -2,6 +2,7 @@
 
 namespace FakePay\Adapter;
 
+use Guzzle\Http\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormFactory;
@@ -72,21 +73,18 @@ class RealexAdapter extends BaseAdapter
 		$this->logger->debug("Posting response code `$responseCode` to: $responseUrl");
 
 		// Post response to client
-		$ch = curl_init($responseUrl);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-			'ORDER_ID' => current($this->getFlashBag()->get('ORDER_ID')),
-			'RESULT' => $responseCode, // TODO other status codes...
-			'SAVED_PAYER_REF' => current($this->getFlashBag()->get('PAYER_REF')),
-			'SAVED_PMT_REF' => current($this->getFlashBag()->get('PMT_REF')),
+        $client = new Client($responseUrl);
+        $request = $client->post(null, null, array(
+            'ORDER_ID' => current($this->getFlashBag()->get('ORDER_ID')),
+            'RESULT' => $responseCode, // TODO other status codes...
+            'SAVED_PAYER_REF' => current($this->getFlashBag()->get('PAYER_REF')),
+            'SAVED_PMT_REF' => current($this->getFlashBag()->get('PMT_REF')),
 
-			// TODO - post back everything else in the spec...
-		));
+            // TODO - post back everything else in the spec...
+        ));
+        $response = $request->send();
 
-		$data = curl_exec($ch);
-
-		return new Response($data);
+        return new Response($response->getBody(true));
 	}
 
 	/**
