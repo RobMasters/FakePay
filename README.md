@@ -24,7 +24,7 @@ Create a log directory and ensure it is writable by the web-server user:
 
 ```
 $ mkdir app/logs
-$ chown 0777 app/logs
+$ chmod 0777 app/logs
 ```
 
 Create and edit your parameters.ini file from the distributed version:
