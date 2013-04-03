@@ -2,6 +2,7 @@
 
 namespace FakePay\Adapter;
 
+use Guzzle\Http\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormFactory;
@@ -72,10 +73,8 @@ class RealexAdapter extends BaseAdapter
 		$params = $this->getFlashBag()->get('params');
 
 		// Post response to client
-		$ch = curl_init($responseUrl);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+		$client = new Client($responseUrl);
+		$request = $client->post(null, null, array(
 			'ORDER_ID' => $params['ORDER_ID'],
 			'RESULT' => $responseCode,
 			'SAVED_PAYER_REF' => $params['PAYER_REF'],
@@ -101,9 +100,9 @@ class RealexAdapter extends BaseAdapter
 			'BATCHID' => 111891
 		));
 
-		$data = curl_exec($ch);
+		$response = $request->send();
 
-		return new Response($data);
+		return new Response($response->getBody(true));
 	}
 
 	/**
