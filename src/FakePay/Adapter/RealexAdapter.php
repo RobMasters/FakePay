@@ -117,18 +117,16 @@ class RealexAdapter extends BaseAdapter
 			'TIMESTAMP'
 		);
 
-		// RealVault
-		if ($this->request->request->get('OFFER_SAVE_CARD')) {
-			$params = array_merge($params, array(
-				'PAYER_REF',
-				'PMT_REF'
-			));
-		}
-
 		$flashBag = $this->getFlashBag();
 		$param_values = array();
 		foreach ($params as $param) {
 			$param_values[$param] = $this->request->request->get($param);
+		}
+
+		// RealVault
+		if ($this->request->request->get('OFFER_SAVE_CARD')) {
+			$param_values['PAYER_REF'] = $this->request->request->get('PAYER_REF') ?: $this->generateRandomString();
+			$param_values['PMT_REF'] = $this->request->request->get('PMT_REF') ?: $this->generateRandomString();
 		}
 
 		$flashBag->set('params', $param_values);
@@ -140,5 +138,20 @@ class RealexAdapter extends BaseAdapter
 	private function getFlashBag()
 	{
 		return $this->request->getSession()->getFlashBag();
+	}
+
+	/**
+	 * @param int $length
+	 * @return string
+	 */
+	private function generateRandomString($length = 10)
+	{
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, strlen($characters) - 1)];
+		}
+
+		return $randomString;
 	}
 }
