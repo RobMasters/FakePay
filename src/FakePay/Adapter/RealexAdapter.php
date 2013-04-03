@@ -64,24 +64,41 @@ class RealexAdapter extends BaseAdapter
 	 */
 	public function process()
 	{
-		// Check data
-
 		$responseUrl = $this->getResponseUrl();
 		$responseCode = $this->request->request->get('custom_status', '00');
 
 		$this->logger->debug("Posting response code `$responseCode` to: $responseUrl");
+
+		$params = $this->getFlashBag()->get('params');
 
 		// Post response to client
 		$ch = curl_init($responseUrl);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-			'ORDER_ID' => array_shift($this->getFlashBag()->get('ORDER_ID')),
-			'RESULT' => $responseCode, // TODO other status codes...
-			'SAVED_PAYER_REF' => array_shift($this->getFlashBag()->get('PAYER_REF')),
-			'SAVED_PMT_REF' => array_shift($this->getFlashBag()->get('PMT_REF')),
-
-			// TODO - post back everything else in the spec...
+			'ORDER_ID' => $params['ORDER_ID'],
+			'RESULT' => $responseCode,
+			'SAVED_PAYER_REF' => $params['PAYER_REF'],
+			'SAVED_PMT_REF' => $params['PMT_REF'],
+			'MERCHANT_ID' => $params['MERCHANT_ID'],
+			'AMOUNT' => $params['AMOUNT'],
+			'TIMESTAMP' => $params['TIMESTAMP'],
+			'MD5HASH' => '',
+			'REALWALLET_CHOSEN' => array_key_exists('PAYER_REF', $params),
+			'PMT_SETUP' => '00',
+			'PMT_SETUP_MSG' => 'Successful',
+			'SAVED_PMT_TYPE' => 'VISA',
+			'SAVED_PMT_DIGITS' => '426397xxxx1307',
+			'SAVED_PMT_EXPDATE' => '0214',
+			'SAVED_PMT_NAME' => 'Mr P Yi',
+			'ACCOUNT' => 'internet',
+			'AUTHCODE' => 12345,
+			'MESSAGE' => '[ test system ] Authorised',
+			'PASREF' => 1364910737394424,
+			'AVSPOSTCODERESULT' => 'U',
+			'AVSADDRESSRESULT' => 'U',
+			'CVNRESULT' => 'U',
+			'BATCHID' => 111891
 		));
 
 		$data = curl_exec($ch);
@@ -95,7 +112,10 @@ class RealexAdapter extends BaseAdapter
 	private function savePersistentParams()
 	{
 		$params = array(
-			'ORDER_ID'
+			'MERCHANT_ID',
+			'ORDER_ID',
+			'AMOUNT',
+			'TIMESTAMP'
 		);
 
 		// RealVault
@@ -106,10 +126,13 @@ class RealexAdapter extends BaseAdapter
 			));
 		}
 
-		$flashBag = $this->getFlashBag();;
+		$flashBag = $this->getFlashBag();
+		$param_values = array();
 		foreach ($params as $param) {
-			$flashBag->set($param, $this->request->request->get($param));
+			$param_values[$param] = $this->request->request->get($param);
 		}
+
+		$flashBag->set('params', $param_values);
 	}
 
 	/**
