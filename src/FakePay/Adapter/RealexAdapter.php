@@ -74,7 +74,7 @@ class RealexAdapter extends BaseAdapter
 
 		// Post response to client
 		$client = new Client($responseUrl);
-		$request = $client->post(null, null, array(
+		$postVars = array(
 			'ORDER_ID' => $params['ORDER_ID'],
 			'RESULT' => $responseCode,
 			'SAVED_PAYER_REF' => $params['PAYER_REF'],
@@ -98,7 +98,31 @@ class RealexAdapter extends BaseAdapter
 			'AVSADDRESSRESULT' => 'U',
 			'CVNRESULT' => 'U',
 			'BATCHID' => 111891
-		));
+		);
+
+		$hashString = sprintf('%s.%s.%s.%s.%s.%s.%s',
+			$params['TIMESTAMP'],
+			$this->config['merchant_id'],
+			$params['ORDER_ID'],
+			$responseCode,
+			'[ test system ] Authorised',
+			'1364910737394424',
+			12345
+		);
+
+		if ($this->request->getSession()->get('hash_type') === 'sha1') {
+			$postVars['SHA1HASH'] = sha1(sprintf('%s.%s',
+				sha1($hashString),
+				$this->config['secret']
+			));
+		} else {
+			$postVars['MD5HASH'] = md5(sprintf('%s.%s',
+				md5($hashString),
+				$this->config['secret']
+			));
+		}
+
+		$request = $client->post(null, null, $postVars);
 
 		$response = $request->send();
 
@@ -130,6 +154,7 @@ class RealexAdapter extends BaseAdapter
 		}
 
 		$flashBag->set('params', $param_values);
+		$this->request->getSession()->set('hash_type', ($this->request->request->has('SHA1HASH')) ? 'sha1' : 'md5');
 	}
 
 	/**
