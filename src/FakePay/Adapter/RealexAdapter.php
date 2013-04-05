@@ -93,7 +93,7 @@ class RealexAdapter extends BaseAdapter
 			'ACCOUNT' => 'internet',
 			'AUTHCODE' => 12345,
 			'MESSAGE' => '[ test system ] Authorised',
-			'PASREF' => 1364910737394424,
+			'PASREF' => '1364910737394424',
 			'AVSPOSTCODERESULT' => 'U',
 			'AVSADDRESSRESULT' => 'U',
 			'CVNRESULT' => 'U',
