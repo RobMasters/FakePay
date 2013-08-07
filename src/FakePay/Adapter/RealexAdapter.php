@@ -68,6 +68,10 @@ class RealexAdapter extends BaseAdapter
 		$responseUrl = $this->getResponseUrl();
 		$responseCode = $this->request->request->get('custom_status', '00');
 
+        if ($this->request->request->has('server_error')) {
+            return new Response('<h1>Server error</h1><p>No response is sent to the response URL</p>');
+        }
+
 		$this->logger->debug("Posting response code `$responseCode` to: $responseUrl");
 
 		$params = $this->getFlashBag()->get('params');
