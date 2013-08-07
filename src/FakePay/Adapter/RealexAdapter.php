@@ -40,9 +40,9 @@ class RealexAdapter extends BaseAdapter
 		// Realvault
 		if ($this->request->request->has('OFFER_SAVE_CARD')) {
 			$required = array_merge($required, array(
-//				'PAYER_REF',
+				'PAYER_REF',
 //				'PMT_REF',
-//				'PAYER_EXIST'
+				'PAYER_EXIST'
 			));
 		}
 
