@@ -41,7 +41,7 @@ class RealexAdapter extends BaseAdapter
 		if ($this->request->request->has('OFFER_SAVE_CARD')) {
 			$required = array_merge($required, array(
 				'PAYER_REF',
-				'PMT_REF',
+//				'PMT_REF',
 				'PAYER_EXIST'
 			));
 		}
