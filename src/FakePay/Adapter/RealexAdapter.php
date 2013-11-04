@@ -104,6 +104,12 @@ class RealexAdapter extends BaseAdapter
 			'BATCHID' => 111891
 		);
 
+        // Pass back any additional info that was sent
+        $extra = $this->getFlashBag()->get('extra');
+        foreach ($extra as $key => $value) {
+            $postVars[$key] = $value;
+        }
+
 		$hashString = sprintf('%s.%s.%s.%s.%s.%s.%s',
 			$params['TIMESTAMP'],
 			$this->config['merchant_id'],
@@ -145,20 +151,52 @@ class RealexAdapter extends BaseAdapter
 			'TIMESTAMP'
 		);
 
+        $realexFields = array(
+            'MERCHANT_ID',
+            'ACCOUNT',
+            'ORDER_ID',
+            'AMOUNT',
+            'CURRENCY',
+            'TIMESTAMP',
+            'MD5HASH',
+            'SHA1HASH',
+            'AUTO_SETTLE_FLAG',
+            'COMMENT1',
+            'COMMENT2',
+            'RETURN_TSS',
+            'SHIPPING_CODE',
+            'SHIPPING_CO',
+            'BILLING_CODE',
+            'BILLING_CO',
+            'CUST_NUM',
+            'VAR_REF',
+            'PROD_ID'
+        );
+
+        $requestValues = $this->request->request->all();
+
 		$flashBag = $this->getFlashBag();
-		$param_values = array();
+		$paramValues = array();
 		foreach ($params as $param) {
-			$param_values[$param] = $this->request->request->get($param);
+			$paramValues[$param] = $requestValues[$param];
 		}
 
 		// RealVault
 		if ($this->request->request->get('OFFER_SAVE_CARD')) {
-			$param_values['PAYER_REF'] = $this->request->request->get('PAYER_REF') ?: $this->generateRandomString();
-			$param_values['PMT_REF'] = $this->request->request->get('PMT_REF') ?: $this->generateRandomString();
+			$paramValues['PAYER_REF'] = $this->request->request->get('PAYER_REF') ?: $this->generateRandomString();
+			$paramValues['PMT_REF'] = $this->request->request->get('PMT_REF') ?: $this->generateRandomString();
 		}
 
-		$flashBag->set('params', $param_values);
+		$flashBag->set('params', $paramValues);
 		$this->request->getSession()->set('hash_type', ($this->request->request->has('SHA1HASH')) ? 'sha1' : 'md5');
+
+        $extra = array();
+        foreach ($requestValues as $key => $requestValue) {
+            if (!in_array($key, $realexFields)) {
+                $extra[$key] = $requestValue;
+            }
+        }
+        $flashBag->set('extra', $extra);
 	}
 
 	/**
