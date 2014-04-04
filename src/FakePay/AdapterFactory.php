@@ -3,6 +3,7 @@
 namespace FakePay;
 
 use FakePay\Adapter\AdapterInterface;
+use FakePay\Adapter\XmlResponseInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,24 +25,31 @@ class AdapterFactory
 	 */
 	protected $sandbox;
 
+    /**
+     * @var \Twig_Environment
+     */
+    protected $templating;
+
 	/**
 	 * @var \Psr\Log\LoggerInterface
 	 */
 	protected $logger;
 
-	/**
-	 * @param Request $request
-	 * @param FormFactory $formFactory
-	 * @param array $config
-	 * @param bool $sandbox
-	 * @param \Psr\Log\LoggerInterface $logger
-	 */
-    function __construct(Request $request, FormFactory $formFactory, array $config, $sandbox, LoggerInterface $logger)
+    /**
+     * @param Request $request
+     * @param FormFactory $formFactory
+     * @param array $config
+     * @param bool $sandbox
+     * @param \Twig_Environment $templating
+     * @param \Psr\Log\LoggerInterface $logger
+     */
+    function __construct(Request $request, FormFactory $formFactory, array $config, $sandbox, \Twig_Environment $templating, LoggerInterface $logger)
     {
         $this->request = $request;
 		$this->formFactory = $formFactory;
 		$this->config = $config;
 		$this->sandbox = $sandbox;
+		$this->templating = $templating;
 		$this->logger = $logger;
 
 		$this->adapters = array();
@@ -69,14 +77,19 @@ class AdapterFactory
 		}
 
 		$class = $this->config[$name]['class'];
-
-        return $this->adapters[$name] = new $class(
+        $adapter = $this->adapters[$name] = new $class(
             $this->formFactory,
             $this->request,
 			$this->sandbox,
             $this->config[$name],
 			$this->logger
         );
+
+        if ($adapter instanceof XmlResponseInterface) {
+            $adapter->setTemplating($this->templating);
+        }
+
+        return $adapter;
     }
 
     /**

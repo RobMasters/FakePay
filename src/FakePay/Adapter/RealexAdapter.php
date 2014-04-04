@@ -65,19 +65,16 @@ class RealexAdapter extends BaseAdapter
 	 */
 	public function process()
 	{
-		$responseUrl = $this->getResponseUrl();
 		$responseCode = $this->request->request->get('custom_status', '00');
 
         if ($this->request->request->has('server_error')) {
             return new Response('<h1>Server error</h1><p>No response is sent to the response URL</p>');
         }
 
-		$this->logger->debug("Posting response code `$responseCode` to: $responseUrl");
 
-		$params = $this->getFlashBag()->get('params');
+		$params = $this->getProcessParams();
 
 		// Post response to client
-		$client = new Client($responseUrl);
 		$postVars = array(
 			'ORDER_ID' => $params['ORDER_ID'],
 			'RESULT' => $responseCode,
@@ -96,7 +93,7 @@ class RealexAdapter extends BaseAdapter
 			'SAVED_PMT_NAME' => 'Mr P Yi',
 			'ACCOUNT' => 'internet',
 			'AUTHCODE' => 12345,
-			'MESSAGE' => '[ test system ] Authorised',
+			'MESSAGE' => (($responseCode === '00') ? '[ test system ] Authorised' : '[ test system ] Something went wrong'),
 			'PASREF' => '1364910737394424',
 			'AVSPOSTCODERESULT' => 'U',
 			'AVSADDRESSRESULT' => 'U',
@@ -105,39 +102,90 @@ class RealexAdapter extends BaseAdapter
 		);
 
         // Pass back any additional info that was sent
-        $extra = $this->getFlashBag()->get('extra');
+        $extra = $this->getExtraFields();
         foreach ($extra as $key => $value) {
             $postVars[$key] = $value;
         }
 
-		$hashString = sprintf('%s.%s.%s.%s.%s.%s.%s',
-			$params['TIMESTAMP'],
-			$this->config['merchant_id'],
-			$params['ORDER_ID'],
-			$responseCode,
-			'[ test system ] Authorised',
-			'1364910737394424',
-			12345
-		);
+		$hash = $this->getSha1Hash(
+            $params['TIMESTAMP'],
+            $this->config['merchant_id'],
+            $params['ORDER_ID'],
+            $responseCode,
+            '[ test system ] Authorised',
+            '1364910737394424',
+            12345
+        );
 
 		if ($this->request->getSession()->get('hash_type') === 'sha1') {
-			$postVars['SHA1HASH'] = sha1(sprintf('%s.%s',
-				sha1($hashString),
-				$this->config['secret']
-			));
+			$postVars['SHA1HASH'] = $this->getSha1Hash($hash);
 		} else {
-			$postVars['MD5HASH'] = md5(sprintf('%s.%s',
-				md5($hashString),
-				$this->config['secret']
-			));
+			$postVars['MD5HASH'] = $this->getMd5Hash($hash);
 		}
 
-		$request = $client->post(null, null, $postVars);
-
-		$response = $request->send();
-
-		return new Response($response->getBody(true));
+		return $this->processResponse($postVars);
 	}
+
+    protected function processResponse($postVars)
+    {
+        $responseUrl = $this->getResponseUrl();
+        $this->logger->debug("Posting response code `{$postVars['RESULT']}` to: $responseUrl");
+        $client = new Client($responseUrl);
+        $request = $client->post(null, null, $postVars);
+        $response = $request->send();
+
+        return new Response($response->getBody(true));
+    }
+
+    /**
+     * @param $hash
+     * @return string
+     */
+    protected function getSha1Hash($hash)
+    {
+        return sha1(sprintf('%s.%s',
+            sha1($hash),
+            $this->config['secret']
+        ));
+    }
+
+    /**
+     * @param $hash
+     * @return string
+     */
+    protected function getMd5Hash($hash)
+    {
+        return md5(sprintf('%s.%s',
+            md5($hash),
+            $this->config['secret']
+        ));
+    }
+
+    protected function getHashString($timestamp, $merchantId, $orderId, $responseCode, $message = '[ test system ] Authorised', $payerRef)
+    {
+        return sprintf('%s.%s.%s.%s.%s.%s.%s',
+            $timestamp,
+            $merchantId,
+            $orderId,
+            $responseCode,
+            '[ test system ] Authorised',
+            '1364910737394424',
+            12345
+        );
+    }
+
+    /**
+     *
+     */
+    protected function getProcessParams()
+    {
+        return $this->getFlashBag()->get('params');
+    }
+
+    protected function getExtraFields()
+    {
+        return $this->getFlashBag()->get('extra');
+    }
 
 	/**
 	 *

@@ -75,6 +75,7 @@ $app['fakepay.adapter_factory'] = $app->share(function() use ($app) {
 		$app['form.factory'],
 		$app['fakepay']['adapter'],
 		$app['sandbox'],
+        $app['twig'],
 		$app['monolog']
 	);
 });
