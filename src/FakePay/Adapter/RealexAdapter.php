@@ -107,7 +107,7 @@ class RealexAdapter extends BaseAdapter
             $postVars[$key] = $value;
         }
 
-		$hash = $this->getSha1Hash(
+		$hashString = sprintf('%s.%s.%s.%s.%s.%s.%s',
             $params['TIMESTAMP'],
             $this->config['merchant_id'],
             $params['ORDER_ID'],
@@ -118,9 +118,9 @@ class RealexAdapter extends BaseAdapter
         );
 
 		if ($this->request->getSession()->get('hash_type') === 'sha1') {
-			$postVars['SHA1HASH'] = $this->getSha1Hash($hash);
+			$postVars['SHA1HASH'] = $this->getSha1Hash($hashString);
 		} else {
-			$postVars['MD5HASH'] = $this->getMd5Hash($hash);
+			$postVars['MD5HASH'] = $this->getMd5Hash($hashString);
 		}
 
 		return $this->processResponse($postVars);
