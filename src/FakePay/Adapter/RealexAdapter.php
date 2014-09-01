@@ -182,8 +182,15 @@ class RealexAdapter extends BaseAdapter
         return $this->getFlashBag()->get('params');
     }
 
+    /**
+     * @return array
+     */
     protected function getExtraFields()
     {
+        if ($this->request->request->has('ignore_extra')) {
+            return array();
+        }
+
         return $this->getFlashBag()->get('extra');
     }
 
