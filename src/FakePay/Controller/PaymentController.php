@@ -2,6 +2,7 @@
 
 namespace FakePay\Controller;
 
+use FakePay\Adapter\RealvaultAdapter;
 use FakePay\AdapterFactory;
 use Symfony\Component\HttpFoundation\Response;
 use FakePay\Adapter\AdapterInterface;
@@ -15,11 +16,19 @@ class PaymentController extends BaseController
     public function displayAction(AdapterInterface $adapter)
     {
         $errors = array();
-        if (!$adapter->validateRequest($this->getRequest())) {
-            $errors = $this->getRequest()->getSession()->getFlashBag()->get("{$adapter->getName()}_error");
+
+        if ($adapter instanceof RealvaultAdapter) {
+            return $this->processAction($adapter);
         }
 
-        return new Response($this->getTemplating()->render("Adapter/{$adapter->getName()}.html.twig", array(
+        $adapterName = $adapter->getName();
+        $this->getLogger()->debug('In display action for adapter: ' . $adapterName);
+
+        if (!$adapter->validateRequest($this->getRequest())) {
+            $errors = $this->getRequest()->getSession()->getFlashBag()->get("{$adapterName}_error");
+        }
+
+        return new Response($this->getTemplating()->render("Adapter/{$adapterName}.html.twig", array(
 			'adapter' => $adapter,
             'form' => $adapter->buildForm()->createView(),
             'errors' => $errors
@@ -32,8 +41,11 @@ class PaymentController extends BaseController
      */
 	public function processAction(AdapterInterface $adapter)
 	{
+        $adapterName = $adapter->getName();
+        $this->getLogger()->debug('In process action for adapter: ' . $adapterName);
+
 		try {
-			$this->getLogger()->addDebug("Processing payment using adapter: " . $adapter->getName());
+			$this->getLogger()->addDebug("Processing payment using adapter: " . $adapterName);
 			$response = $adapter->process();
 		} catch (\Exception $e) {
 			return new Response($e->getMessage(), 400);

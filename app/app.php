@@ -4,6 +4,8 @@
 $app = require_once __DIR__.'/bootstrap.php';
 
 $adapterConverter = function($name) use ($app) {
+    $app['monolog']->debug('Creating adapter for: ' . $name);
+
     return $app['fakepay.adapter_factory']->create($name);
 };
 

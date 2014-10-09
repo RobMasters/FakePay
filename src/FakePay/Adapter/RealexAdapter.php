@@ -21,7 +21,6 @@ class RealexAdapter extends BaseAdapter
 	}
 
 	/**
-	 * @param \Symfony\Component\HttpFoundation\Request $request
 	 * @return bool|mixed
 	 */
 	public function validateRequest()
@@ -188,10 +187,14 @@ class RealexAdapter extends BaseAdapter
     protected function getExtraFields()
     {
         if ($this->request->request->has('ignore_extra')) {
+            $this->logger->debug('Not returning extra fields');
             return array();
         }
 
-        return $this->getFlashBag()->get('extra');
+        $extraFields = $this->getFlashBag()->get('extra');
+        $this->logger->debug("Returning extra fields:\n" . print_r($extraFields, true));
+
+        return $extraFields;
     }
 
 	/**
