@@ -47,7 +47,9 @@ class RealexAdapter extends BaseAdapter
 
         foreach ($required as $value) {
             if (null === $this->request->request->get($value)) {
-				$this->addFlashMessage(sprintf('`%s` must be provided', $value));
+				$message = sprintf('`%s` must be provided', $value);
+				$this->logger->warning($message);
+				$this->addFlashMessage($message);
                 $out = false;
             }
         }
@@ -72,6 +74,7 @@ class RealexAdapter extends BaseAdapter
 
 
 		$params = $this->getProcessParams();
+		$this->logger->debug(sprintf('Retrieved params from flashBag: %s', print_r($params, true)));
 
 		// Post response to client
 		$postVars = array(
@@ -245,6 +248,7 @@ class RealexAdapter extends BaseAdapter
 			$paramValues['PMT_REF'] = $this->request->request->get('PMT_REF') ?: $this->generateRandomString();
 		}
 
+		$this->logger->debug(sprintf('Storing params in flashBag: %s', print_r($paramValues, true)));
 		$flashBag->set('params', $paramValues);
 		$this->request->getSession()->set('hash_type', ($this->request->request->has('SHA1HASH')) ? 'sha1' : 'md5');
 
@@ -254,6 +258,7 @@ class RealexAdapter extends BaseAdapter
                 $extra[$key] = $requestValue;
             }
         }
+		$this->logger->debug(sprintf('Storing extra in flashBag: %s', print_r($extra, true)));
         $flashBag->set('extra', $extra);
 	}
 

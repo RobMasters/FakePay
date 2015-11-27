@@ -33,6 +33,7 @@ if (file_exists($envConfig)) {
  */
 
 $app->register(new Silex\Provider\SessionServiceProvider());
+$app['session.storage.handler'] = null;
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 

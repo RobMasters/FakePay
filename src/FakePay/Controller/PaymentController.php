@@ -17,6 +17,8 @@ class PaymentController extends BaseController
     {
         $errors = array();
 
+//        $this->getLogger()->debug('Session: %s', print_r($_SESSION, true));
+
         if ($adapter instanceof RealvaultAdapter) {
             return $this->processAction($adapter);
         }

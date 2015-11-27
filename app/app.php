@@ -1,6 +1,8 @@
 <?php
 
 /** @var $app \Silex\Application */
+use Symfony\Component\HttpFoundation\Session\Session;
+
 $app = require_once __DIR__.'/bootstrap.php';
 
 $adapterConverter = function($name) use ($app) {
@@ -9,6 +11,11 @@ $adapterConverter = function($name) use ($app) {
     return $app['fakepay.adapter_factory']->create($name);
 };
 
+$app->before(function ($request) {
+	/** @var Session $session */
+	$session = $request->getSession();
+	$session->start();
+});
 
 $app->get('/info', function() {
 	return phpinfo();
